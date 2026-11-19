@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Neon Coast Cover Studio — turn any photo into GTA-style cover art</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">NC</span>
+    <div>
+      <h1>Neon Coast Cover Studio</h1>
+      <p>Turn any photo into GTA-style cover art. 100% offline — your photos never leave this machine.</p>
+    </div>
+  </div>
+  <div class="top-actions">
+    <button id="undo" type="button" title="Undo (Ctrl+Z)">↩ Undo</button>
+    <button id="redo" type="button" title="Redo (Ctrl+Y)">↪ Redo</button>
+    <button id="quickCover" type="button" class="primary">⚡ Quick cover → PNG</button>
+  </div>
+</header>
+
+<main class="app">
+  <aside class="controls">
+    <section>
+      <h2>1 · Photos</h2>
+      <label class="upload">+ Add your photos
+        <input id="photoInput" type="file" accept="image/*" multiple>
+      </label>
+      <p class="hint" id="photoCount">0 photos loaded</p>
+      <div id="tray" class="tray"></div>
+      <p class="hint">Click a photo to put it in the selected panel. Drag the cover to pan, scroll to zoom.</p>
+    </section>
+
+    <section>
+      <h2>2 · Layout</h2>
+      <div class="btn-grid" id="layouts">
+        <button type="button" data-layout="grid4">▦ Four-panel grid</button>
+        <button type="button" data-layout="hero3">▤ Hero + three</button>
+        <button type="button" data-layout="fullbleed">▣ Full bleed</button>
+        <button type="button" data-layout="grid9">▦ Nine-panel grid</button>
+        <button type="button" data-layout="tilt">◫ Tilted snapshots</button>
+        <button type="button" data-layout="split2">▥ Split duo</button>
+      </div>
+      <div class="panel-edit">
+        <p class="panel-label" id="panelLabel">Panel 1 of 4</p>
+        <label>Zoom <span id="zoomVal">100%</span>
+          <input id="zoom" type="range" min="80" max="250" step="1" value="100">
+        </label>
+        <label>Pan left–right
+          <input id="panX" type="range" min="-50" max="50" step="1" value="0">
+        </label>
+        <label>Pan up–down
+          <input id="panY" type="range" min="-50" max="50" step="1" value="0">
+        </label>
+        <button id="fitPanel" type="button">Reset this panel</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>3 · One-click looks</h2>
+      <div class="btn-grid">
+        <button type="button" data-preset="sunsetSleeve">🌇 Sunset Sleeve</button>
+        <button type="button" data-preset="neonCoast">🌃 Neon Coast</button>
+        <button type="button" data-preset="palmPoster">🌴 Palm Poster</button>
+        <button type="button" data-preset="goldStandard">🥇 Gold Standard</button>
+        <button type="button" data-preset="monoNoir">🎞 Mono Noir</button>
+        <button type="button" data-preset="splitDuo">◐ Split Duo</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>4 · Grade</h2>
+      <div class="btn-grid">
+        <button type="button" data-grade="sunset"><span class="sw" style="background:linear-gradient(135deg,#ff9a3d,#ff2e88)"></span>Vice Sunset</button>
+        <button type="button" data-grade="neon"><span class="sw" style="background:linear-gradient(135deg,#00e5ff,#ff2e88)"></span>Neon Night</button>
+        <button type="button" data-grade="gold"><span class="sw" style="background:linear-gradient(135deg,#ffd60a,#ff7a00)"></span>Vice Gold</button>
+        <button type="button" data-grade="teal"><span class="sw" style="background:linear-gradient(135deg,#00e5b0,#0077ff)"></span>Teal Heat</button>
+        <button type="button" data-grade="palm"><span class="sw" style="background:linear-gradient(135deg,#a8ffce,#ff9a3d)"></span>Palm Fade</button>
+        <button type="button" data-grade="noir"><span class="sw" style="background:linear-gradient(135deg,#fff,#000)"></span>Mono Noir</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>5 · Caption</h2>
+      <label>Title
+        <input id="title" type="text" maxlength="30" value="Neon Shore">
+      </label>
+      <label>Subtitle (script)
+        <input id="subtitle" type="text" maxlength="40" value="a neon coast story">
+      </label>
+      <label>Title size <span id="titleSizeVal">115</span>
+        <input id="titleSize" type="range" min="60" max="180" step="1" value="115">
+      </label>
+      <div class="row">
+        <span class="lbl">Title colour</span>
+        <div class="swatches">
+          <button type="button" data-titlecolor="white" title="White" style="background:#fff"></button>
+          <button type="button" data-titlecolor="sunset" title="Sunset gradient" style="background:linear-gradient(135deg,#ffd60a,#ff2e88)"></button>
+          <button type="button" data-titlecolor="gold" title="Gold" style="background:#ffd60a"></button>
+          <button type="button" data-titlecolor="pink" title="Pink" style="background:#ff2e88"></button>
+          <button type="button" data-titlecolor="cyan" title="Cyan" style="background:#00e5ff"></button>
+          <button type="button" data-titlecolor="black" title="Black" style="background:#141414"></button>
+        </div>
+      </div>
+      <label>Subtitle colour
+        <input id="subtitleColor" type="color" value="#ffd60a">
+      </label>
+      <div class="row">
+        <span class="lbl">Title position</span>
+        <div class="seg">
+          <button type="button" data-titlepos="top">Top</button>
+          <button type="button" data-titlepos="center">Centre</button>
+          <button type="button" data-titlepos="bottom">Bottom</button>
+        </div>
+      </div>
+      <label>Nudge title up / down
+        <input id="titleY" type="range" min="-20" max="20" step="1" value="0">
+      </label>
+      <label class="check"><input id="outline" type="checkbox" checked> Bold outline on title</label>
+    </section>
+
+    <section>
+      <h2>6 · Poster dressing</h2>
+      <label>Badge ribbon
+        <input id="badge" type="text" maxlength="18" value="Est. 2026">
+      </label>
+      <label>Heat meter (stars)
+        <input id="stars" type="range" min="0" max="5" step="1" value="4">
+      </label>
+      <div class="row">
+        <span class="lbl">Panel frame</span>
+        <div class="seg">
+          <button type="button" data-frame="ink">Ink</button>
+          <button type="button" data-frame="white">White</button>
+          <button type="button" data-frame="none">None</button>
+        </div>
+      </div>
+      <label class="check"><input id="halftone" type="checkbox" checked> Halftone title band</label>
+      <label class="check"><input id="grain" type="checkbox" checked> Film grain</label>
+      <label>Grain amount
+        <input id="grainAmount" type="range" min="0" max="25" step="1" value="10">
+      </label>
+      <label class="check"><input id="vignette" type="checkbox" checked> Vignette</label>
+    </section>
+
+    <section>
+      <h2>7 · Export PNG</h2>
+      <div class="export-btns">
+        <button id="exportSquare" type="button">⬇ Square · 1080 × 1080</button>
+        <button id="exportStory" type="button">⬇ Story · 1080 × 1350</button>
+        <button id="exportWide" type="button">⬇ Wide · 1920 × 1080</button>
+        <button id="exportAll" type="button" class="primary">⬇ Export all three</button>
+      </div>
+      <p id="status" role="status">Ready.</p>
+      <p class="hint">All art is original — no game logos, artwork or fonts. Title font Anton and subtitle font Pacifico, both under the SIL Open Font License (see app/fonts/).</p>
+    </section>
+  </aside>
+
+  <section class="stage">
+    <div class="size-tabs">
+      <button type="button" data-size="square">Square</button>
+      <button type="button" data-size="story">Story</button>
+      <button type="button" data-size="wide">Wide</button>
+      <span class="stage-hint">Click a panel to select it · drag to pan · scroll to zoom</span>
+    </div>
+    <canvas id="cover" width="900" height="900" aria-label="Live cover preview"></canvas>
+  </section>
+</main>
+
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
